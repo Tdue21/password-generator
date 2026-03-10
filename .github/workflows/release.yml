@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build Vue app
+        run: npm run build
+
+      - name: Compile TypeScript server
+        run: npx tsc server.ts --module ESNext --moduleResolution bundler
+
+      - name: Prepare deployment package
+        run: |
+          mkdir -p deploy
+
+          # Copy required files
+          cp -r dist deploy/
+          cp server.js deploy/
+
+          # Read port from package.json and create .env
+          PORT=$(node -p "require('./package.json').config.port")
+          echo "PORT=$PORT" > deploy/.env
+
+          # Create minimal production package.json
+          node -e "
+            const pkg = require('./package.json');
+            const prodPkg = {
+              name: pkg.name,
+              version: pkg.version,
+              description: pkg.description,
+              type: 'module',
+              scripts: { start: 'node server.js' },
+              dependencies: {
+                express: pkg.dependencies.express,
+                dotenv: pkg.dependencies.dotenv
+              }
+            };
+            console.log(JSON.stringify(prodPkg, null, 2));
+          " > deploy/package.json
+
+      - name: Create ZIP archive
+        run: |
+          cd deploy
+          zip -r ../password-generator-${{ github.ref_name }}.zip .
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: password-generator-${{ github.ref_name }}.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
