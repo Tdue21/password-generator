@@ -1,5 +1,7 @@
 # Password Generator
 
+[![Build and Package](https://github.com/Tdue21/password-generator/actions/workflows/build.yml/badge.svg)](https://github.com/Tdue21/password-generator/actions/workflows/build.yml)
+
 A Vue 3 + TypeScript password and passphrase generator with Vite and Express server.
 
 ## Features
