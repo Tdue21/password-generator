@@ -1,6 +1,6 @@
 {
   "name": "password-generator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Simple Vue-based password generator",
   "type": "module",
   "config": {
@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/generate-changelog.js",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "server": "tsx server.ts",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.10.0",
+    "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@vitejs/plugin-vue": "^5.0.0",
     "@vue/test-utils": "^2.4.0",
     "jsdom": "^24.0.0",

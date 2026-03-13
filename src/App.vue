@@ -22,4 +22,12 @@ body {
   align-items: center;
   padding: 20px;
 }
+
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+}
 </style>

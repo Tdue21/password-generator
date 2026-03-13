@@ -6,6 +6,7 @@ dist/
 deploy/
 temp/
 *.zip
+public/changelog.json
 
 # Environment files
 .env

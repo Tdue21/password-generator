@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-03-13
+
+### Added
+- Mobile-responsive design optimized for phones (tested on OnePlus Nord 4CE)
+- Settings persistence via localStorage (remembers your preferences)
+- Shake-to-generate on mobile devices (requires HTTPS)
+- Changelog popup when tapping version number
+
+### Changed
+- Improved touch targets and spacing for mobile use
+- Reduced UI density on small screens for better usability
+
 ## [1.0.0] - 2026-03-10
 
 ### Added
