@@ -271,6 +271,7 @@ interface ChangelogEntry {
   sections: { title: string; items: string[] }[]
 }
 
+const LAST_SEEN_VERSION_KEY = 'password-generator-last-seen-version'
 const showChangelog = ref<boolean>(false)
 const changelog = ref<ChangelogEntry[]>([])
 
@@ -294,6 +295,24 @@ const openChangelog = (): void => {
 
 const closeChangelog = (): void => {
   showChangelog.value = false
+  // Mark current version as seen
+  try {
+    localStorage.setItem(LAST_SEEN_VERSION_KEY, VERSION)
+  } catch {
+    // Ignore localStorage errors
+  }
+}
+
+const checkForNewVersion = (): void => {
+  try {
+    const lastSeenVersion = localStorage.getItem(LAST_SEEN_VERSION_KEY)
+    if (lastSeenVersion !== VERSION) {
+      // New version detected, show changelog
+      openChangelog()
+    }
+  } catch {
+    // Ignore localStorage errors
+  }
 }
 
 // Load settings and generate initial output on mount
@@ -302,6 +321,8 @@ onMounted(() => {
   generate()
   // For non-iOS, set up immediately
   setupShakeDetection()
+  // Check if we should show changelog for new version
+  checkForNewVersion()
 })
 
 onUnmounted(() => {
