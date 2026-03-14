@@ -1,0 +1,9 @@
+node_modules
+dist
+deploy
+temp
+*.zip
+.git
+.gitignore
+*.md
+.env
